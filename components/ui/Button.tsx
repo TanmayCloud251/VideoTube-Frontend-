@@ -15,7 +15,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-accent text-brand-dark hover:opacity-90",
+    "bg-brand-dark text-brand-light hover:opacity-90",
 
   secondary:
     "bg-brand-light text-brand-dark hover:bg-gray-200",
@@ -48,7 +48,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
+          "inline-flex items-center justify-center rounded-md cursor-pointer font-medium transition-colors focus:outline-none focus:ring-2  disabled:opacity-50",
           variantStyles[variant],
           sizeStyles[size],
           className
