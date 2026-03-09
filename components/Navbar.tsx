@@ -16,7 +16,7 @@ export default function Navbar() {
           type="text"
           placeholder="Search"
           className="px-3 py-1 rounded-l-4xl border border-brand-dark bg-brand-light text-brand-dark"
-          aria-label="Search videos"
+          aria-label="Search videos"  
         />
         <Button type="submit" variant="primary" className="rounded-r-4xl h-fit border-1 border-black w-10 p-1.5 rounded-l-none">🔍</Button>
       </form>
