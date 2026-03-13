@@ -19,6 +19,7 @@ export default function Footer() {
             >
               VideoTube
             </Link>
+            
 
             <p className="mt-4 text-sm text-gray-400 leading-relaxed">
               A platform to share videos, posts and playlists.
@@ -30,6 +31,7 @@ export default function Footer() {
           {footerSections.map((section) => (
             <FooterLinks key={section.title} section={section} />
           ))}
+
 
         </div>
 
