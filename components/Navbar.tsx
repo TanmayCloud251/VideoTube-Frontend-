@@ -1,29 +1,80 @@
+"use client"
+
+import Link from "next/link"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "./ui/Button"
+import { Menu, Search } from "lucide-react"
 
-export default function Navbar() {
+type Props = {
+  toggleSidebar: () => void
+}
+
+
+export default function Navbar({toggleSidebar}: Props) {
+
+  const [query, setQuery] = useState("")
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!query.trim()) return
+
+    router.push(`/search?q=${query}`)
+  }
+
   return (
-    <header className="bg-brand-accent text-brand-dark px-6 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 flex items-center justify-between bg-brand-accent px-4 py-3 text-brand-dark shadow-sm">
 
-      {/* Logo */}
-      <div className="font-bold text-lg">
-        VideoTube
+      {/* LEFT: Logo + Sidebar toggle */}
+      <div className="flex items-center gap-3">
+
+        <button
+          onClick={toggleSidebar}
+          aria-label="Toggle sidebar"
+          className="rounded-md p-2 hover:bg-black/10"
+        >
+          <Menu size={20} />
+        </button>
+
+        <Link href="/" className="text-lg font-bold">
+          VideoTube
+        </Link>
       </div>
 
-      {/* Search */}
-      <form className="flex items-center ">
+      {/* CENTER: Search */}
+      <form
+        onSubmit={handleSearch}
+        className="hidden w-full max-w-md items-center md:flex"
+      >
         <input
-          id="search"
           type="text"
-          placeholder="Search"
-          className="px-3 py-1 rounded-l-4xl border border-brand-dark bg-brand-light text-brand-dark"
-          aria-label="Search videos"  
+          placeholder="Search videos..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full rounded-l-full border border-brand-dark bg-brand-light px-4 py-2 text-sm outline-none"
         />
-        <Button type="submit" variant="primary" className="rounded-r-4xl h-fit border-1 border-black w-10 p-1.5 rounded-l-none">🔍</Button>
+
+        <Button
+          type="submit"
+          className="rounded-r-full border border-black px-3 py-2"
+        >
+          <Search size={18} />
+        </Button>
       </form>
 
-      {/* User actions */}
-      <div className="flex items-center gap-4">
-        <Button variant="secondary" className="rounded-3xl border-2 border-black">Login</Button>
+      {/* RIGHT: Actions */}
+      <div className="flex items-center gap-3">
+
+        {/* Mobile Search Button */}
+        <button className="p-2 md:hidden">
+          <Search size={20} />
+        </button>
+
+        <Button className="rounded-full border border-black px-4 py-1">
+          Login
+        </Button>
+
       </div>
     </header>
   )
