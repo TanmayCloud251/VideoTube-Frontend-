@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "./ui/Button"
-import { Menu, Search, Video, User, LogOut, LayoutDashboard, UserCircle } from "lucide-react"
+import { Menu, Search, Video, User, LogOut, LayoutDashboard, UserCircle, Plus } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 type Props = {
@@ -82,9 +82,11 @@ export default function Navbar({ toggleSidebar }: Props) {
         {user ? (
           <div className="flex items-center gap-4">
             <Link href="/upload">
-              <button className="flex items-center gap-2 rounded-full bg-brand-dark text-brand-light px-4 py-1.5 text-sm font-medium hover:opacity-90 transition-opacity">
-                <Video size={18} />
-                <span className="hidden sm:inline">Add Video</span>
+              <button 
+                title="Add Video"
+                className="flex items-center justify-center rounded-full bg-brand-dark text-brand-light p-2 hover:opacity-90 transition-opacity"
+              >
+                <Plus size={22} />
               </button>
             </Link>
 

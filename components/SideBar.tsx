@@ -15,7 +15,7 @@ const navItems = [
   { name: "Liked Videos", href: "/liked", icon: ThumbsUp },
   { name: "Tweets", href: "/tweets", icon: MessageCircle },
   { name: "Subscriptions", href: "/subscriptions", icon: UserCheck2 },
-  { name: "Playlist", href: "/playlist", icon: ListMusic },
+  { name: "Playlists", href: "/playlist", icon: ListMusic },
 ]
 
 

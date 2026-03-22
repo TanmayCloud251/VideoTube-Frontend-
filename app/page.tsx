@@ -32,10 +32,12 @@ export default function HomePage() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {videos.map((video: any) => (
-        <VideoCard key={video._id} video={video} />
-      ))}
+    <div className="max-w-[1400px] mx-auto px-6 py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {videos.map((video: any) => (
+          <VideoCard key={video._id} video={video} />
+        ))}
+      </div>
     </div>
   );
 }

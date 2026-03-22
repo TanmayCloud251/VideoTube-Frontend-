@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Navbar from "@/components/Navbar"
 import SideBar from "@/components/SideBar"
@@ -17,6 +17,15 @@ export default function RootLayout({
   const pathname = usePathname()
 
   const isAuthPage = pathname === "/login" || pathname === "/signup"
+  const isVideoPage = pathname.startsWith("/video/")
+
+  useEffect(() => {
+    if (isVideoPage) {
+      setIsSidebarOpen(false)
+    } else if (!isAuthPage) {
+      setIsSidebarOpen(true)
+    }
+  }, [pathname, isVideoPage, isAuthPage])
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev)
@@ -32,11 +41,15 @@ export default function RootLayout({
             <div className="flex flex-1 overflow-hidden">
               {!isAuthPage && <SideBar isOpen={isSidebarOpen} />}
 
-              <div className="flex flex-1 flex-col">
-                <main className={`flex-1 overflow-y-auto bg-neutral-900 text-white ${isAuthPage ? 'p-0' : 'p-4'}`}>
-                  {children}
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <main className="flex-1 overflow-y-auto bg-neutral-900 text-white">
+                  <div className="min-h-full flex flex-col">
+                    <div className="flex-1">
+                      {children}
+                    </div>
+                    {!isAuthPage && <Footer />}
+                  </div>
                 </main>
-                {!isAuthPage && <Footer />}
               </div>
             </div>
           </div>
