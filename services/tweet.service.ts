@@ -10,6 +10,11 @@ export const createTweet = async (content: string) => {
   return res.data;
 };
 
+export const updateTweet = async (tweetId: string, content: string) => {
+  const res = await api.patch(`/tweets/${tweetId}`, { content });
+  return res.data;
+};
+
 export const deleteTweet = async (tweetId: string) => {
   const res = await api.delete(`/tweets/${tweetId}`);
   return res.data;

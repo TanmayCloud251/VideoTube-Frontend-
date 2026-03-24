@@ -6,11 +6,11 @@ export const toggleSubscription = async (channelId: string) => {
 };
 
 export const getSubscribedChannels = async (subscriberId: string) => {
-  const res = await api.get(`/subscriptions/c/${subscriberId}`);
+  const res = await api.get(`/subscriptions/u/${subscriberId}`);
   return res.data;
 };
 
 export const getUserChannelSubscribers = async (channelId: string) => {
-  const res = await api.get(`/subscriptions/u/${channelId}`);
+  const res = await api.get(`/subscriptions/c/${channelId}`);
   return res.data;
 };

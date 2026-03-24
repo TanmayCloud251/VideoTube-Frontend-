@@ -84,7 +84,7 @@ export default function Navbar({ toggleSidebar }: Props) {
             <Link href="/upload">
               <button 
                 title="Add Video"
-                className="flex items-center justify-center rounded-full bg-brand-dark text-brand-light p-2 hover:opacity-90 transition-opacity"
+                className="flex items-center justify-center rounded-full bg-white border-2 font-bold text-black p-2 hover:opacity-90 transition-opacity"
               >
                 <Plus size={22} />
               </button>

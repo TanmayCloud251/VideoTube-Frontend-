@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getTweets, createTweet, toggleTweetLike, deleteTweet } from "@/services/tweet.service";
-import { ThumbsUp, Trash2, Send, MessageCircle } from "lucide-react";
+import { getTweets, createTweet, updateTweet, toggleTweetLike, deleteTweet } from "@/services/tweet.service";
+import { ThumbsUp, Trash2, Send, MessageCircle, Edit2, X, Check } from "lucide-react";
 
 interface Tweet {
   _id: string;
@@ -24,6 +24,8 @@ export default function TweetsPage() {
   const [tweets, setTweets] = useState<Tweet[]>([]);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
+  const [editingTweetId, setEditingTweetId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState("");
 
   useEffect(() => {
     fetchTweets();
@@ -82,6 +84,28 @@ export default function TweetsPage() {
       setTweets(prev => prev.filter(t => t._id !== id));
     } catch (error) {
       console.error("Failed to delete tweet:", error);
+    }
+  };
+
+  const startEditing = (tweet: Tweet) => {
+    setEditingTweetId(tweet._id);
+    setEditContent(tweet.content);
+  };
+
+  const cancelEditing = () => {
+    setEditingTweetId(null);
+    setEditContent("");
+  };
+
+  const handleEdit = async (id: string) => {
+    if (!editContent.trim()) return;
+    try {
+      await updateTweet(id, editContent);
+      setTweets(prev => prev.map(t => t._id === id ? { ...t, content: editContent } : t));
+      setEditingTweetId(null);
+    } catch (error) {
+      console.error("Failed to update tweet:", error);
+      alert("Failed to update tweet");
     }
   };
 
@@ -156,26 +180,65 @@ export default function TweetsPage() {
                         <span className="text-neutral-600 text-[10px]">• {new Date(tweet.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <p className="text-neutral-300 mt-1.5 text-sm leading-relaxed whitespace-pre-wrap">{tweet.content}</p>
-                    <div className="flex items-center gap-5 mt-3">
-                      <button
-                        onClick={() => handleLike(tweet._id)}
-                        className={`flex items-center gap-1.5 text-xs transition-colors ${
-                          tweet.isLiked ? "text-brand-accent" : "text-neutral-500 hover:text-white"
-                        }`}
-                      >
-                        <ThumbsUp size={16} fill={tweet.isLiked ? "currentColor" : "none"} />
-                        <span>{tweet.likesCount || 0}</span>
-                      </button>
-                      {user?._id === tweet.owner._id && (
+                    
+                    {editingTweetId === tweet._id ? (
+                      <div className="mt-2">
+                        <textarea
+                          value={editContent}
+                          onChange={(e) => setEditContent(e.target.value)}
+                          className="w-full bg-neutral-800 border border-neutral-700 rounded-lg p-2 text-sm text-white focus:border-brand-accent outline-none resize-none"
+                          rows={3}
+                        />
+                        <div className="flex justify-end gap-2 mt-2">
+                          <button
+                            onClick={cancelEditing}
+                            className="p-1.5 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-md transition-colors"
+                          >
+                            <X size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleEdit(tweet._id)}
+                            className="p-1.5 text-brand-accent hover:bg-brand-accent/10 rounded-md transition-colors"
+                          >
+                            <Check size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-neutral-300 mt-1.5 text-sm leading-relaxed whitespace-pre-wrap">{tweet.content}</p>
+                    )}
+
+                    {!editingTweetId && (
+                      <div className="flex items-center gap-5 mt-3">
                         <button
-                          onClick={() => handleDelete(tweet._id)}
-                          className="text-neutral-600 hover:text-red-500 transition-colors"
+                          onClick={() => handleLike(tweet._id)}
+                          className={`flex items-center gap-1.5 text-xs transition-colors ${
+                            tweet.isLiked ? "text-brand-accent" : "text-neutral-500 hover:text-white"
+                          }`}
                         >
-                          <Trash2 size={16} />
+                          <ThumbsUp size={16} fill={tweet.isLiked ? "currentColor" : "none"} />
+                          <span>{tweet.likesCount || 0}</span>
                         </button>
-                      )}
-                    </div>
+                        {user?._id === tweet.owner._id && (
+                          <>
+                            <button
+                              onClick={() => startEditing(tweet)}
+                              className="text-neutral-600 hover:text-white transition-colors"
+                              title="Edit tweet"
+                            >
+                              <Edit2 size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(tweet._id)}
+                              className="text-neutral-600 hover:text-red-500 transition-colors"
+                              title="Delete tweet"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

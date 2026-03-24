@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getComments, addComment, deleteComment } from "@/services/comment.service";
+import { getComments, addComment, deleteComment, updateComment } from "@/services/comment.service";
 import { Comment } from "@/types";
-import { Trash2, MessageSquare, ThumbsUp } from "lucide-react";
+import { Trash2, MessageSquare, ThumbsUp, Edit2, X, Check } from "lucide-react";
 import { toggleCommentLike } from "@/services/like.service";
 
 interface CommentSectionProps {
@@ -14,14 +14,18 @@ interface CommentSectionProps {
 function CommentItem({ 
   comment, 
   user, 
-  onDelete 
+  onDelete,
+  onEdit
 }: { 
   comment: Comment, 
   user: any, 
-  onDelete: (id: string) => void 
+  onDelete: (id: string) => void,
+  onEdit: (id: string, content: string) => void
 }) {
   const [isLiked, setIsLiked] = useState(comment.isLiked || false);
   const [likesCount, setLikesCount] = useState(comment.likesCount || 0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(comment.content);
 
   const handleLike = async () => {
     if (!user) return alert("Please login to like comments");
@@ -34,9 +38,15 @@ function CommentItem({
     }
   };
 
+  const handleSaveEdit = () => {
+    if (!editContent.trim()) return;
+    onEdit(comment._id, editContent);
+    setIsEditing(false);
+  };
+
   return (
     <div className="flex gap-4">
-      <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+      <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-neutral-800">
         <img src={comment.owner.avatar} alt={comment.owner.fullName} className="object-cover w-full h-full" />
       </div>
       <div className="flex-1">
@@ -46,28 +56,68 @@ function CommentItem({
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
-        <p className="text-sm text-neutral-300 leading-relaxed">{comment.content}</p>
-        <div className="flex items-center gap-4 mt-2">
-          <button
-            onClick={handleLike}
-            className={`flex items-center gap-1.5 text-xs transition-colors hover:text-white ${
-              isLiked ? "text-brand-accent" : "text-neutral-500"
-            }`}
-          >
-            <ThumbsUp size={14} fill={isLiked ? "currentColor" : "none"} />
-            <span>{likesCount}</span>
-          </button>
+        
+        {isEditing ? (
+          <div className="mt-2">
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full bg-neutral-800 border border-neutral-700 rounded-lg p-2 text-sm text-white focus:border-brand-accent outline-none resize-none"
+              rows={2}
+            />
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                onClick={() => { setIsEditing(false); setEditContent(comment.content); }}
+                className="p-1.5 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-md transition-colors"
+                title="Cancel"
+              >
+                <X size={16} />
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="p-1.5 text-brand-accent hover:bg-brand-accent/10 rounded-md transition-colors"
+                title="Save"
+              >
+                <Check size={16} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-neutral-300 leading-relaxed whitespace-pre-wrap">{comment.content}</p>
+        )}
 
-          {user?._id === comment.owner._id && (
+        {!isEditing && (
+          <div className="flex items-center gap-4 mt-2">
             <button
-              onClick={() => onDelete(comment._id)}
-              className="text-neutral-500 hover:text-red-500 transition-colors p-1"
-              title="Delete comment"
+              onClick={handleLike}
+              className={`flex items-center gap-1.5 text-xs transition-colors hover:text-white ${
+                isLiked ? "text-brand-accent" : "text-neutral-500"
+              }`}
             >
-              <Trash2 size={16} />
+              <ThumbsUp size={14} fill={isLiked ? "currentColor" : "none"} />
+              <span>{likesCount}</span>
             </button>
-          )}
-        </div>
+
+            {user?._id === comment.owner._id && (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-neutral-500 hover:text-white transition-colors p-1"
+                  title="Edit comment"
+                >
+                  <Edit2 size={14} />
+                </button>
+                <button
+                  onClick={() => onDelete(comment._id)}
+                  className="text-neutral-500 hover:text-red-500 transition-colors p-1"
+                  title="Delete comment"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -123,6 +173,16 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
     }
   };
 
+  const handleEdit = async (commentId: string, content: string) => {
+    try {
+      await updateComment(commentId, content);
+      setComments(comments.map((c) => c._id === commentId ? { ...c, content } : c));
+    } catch (error) {
+      console.error("Failed to update comment:", error);
+      alert("Failed to update comment.");
+    }
+  };
+
   return (
     <div className="mt-8 pb-10">
       <div className="flex items-center gap-2 mb-6">
@@ -132,7 +192,7 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
 
       {user ? (
         <form onSubmit={handleSubmit} className="flex gap-4 mb-8">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-neutral-800">
             <img src={user.avatar} alt={user.fullName} className="object-cover w-full h-full" />
           </div>
           <div className="flex-1">
@@ -176,7 +236,8 @@ export default function CommentSection({ videoId }: CommentSectionProps) {
               key={comment._id} 
               comment={comment} 
               user={user} 
-              onDelete={handleDelete} 
+              onDelete={handleDelete}
+              onEdit={handleEdit}
             />
           ))
         ) : (

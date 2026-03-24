@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { footerSections } from "./Footer.data"
 import FooterLinks from "./FooterLinks"
-import { Github, Twitter, Youtube } from "lucide-react"
+import { Github, Instagram, Linkedin, Twitter, Youtube } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -45,7 +45,7 @@ export default function Footer() {
           <div className="flex items-center gap-5 text-gray-400">
 
             <a
-              href="#"
+              href="https://github.com/TanmayCloud251"
               aria-label="GitHub"
               className="hover:text-white transition-colors"
             >
@@ -53,19 +53,19 @@ export default function Footer() {
             </a>
 
             <a
-              href="#"
-              aria-label="Twitter"
+              href="https://www.linkedin.com/in/tanmaymi251/"
+              aria-label="Linkedin"
               className="hover:text-white transition-colors"
             >
-              <Twitter size={18} />
+              <Linkedin size={18} />
             </a>
 
             <a
-              href="#"
-              aria-label="YouTube"
+              href="https://www.instagram.com/tanmaymishra251/"
+              aria-label="Instagram"
               className="hover:text-white transition-colors"
             >
-              <Youtube size={18} />
+              <Instagram size={18} />
             </a>
 
           </div>
