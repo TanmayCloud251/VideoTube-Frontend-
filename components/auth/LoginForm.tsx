@@ -32,9 +32,14 @@ export default function LoginForm() {
       setSuccess(response.message || "Login successful! Redirecting...")
       
       if (response.data) {
-        // Many backends return { user: {...}, accessToken: ... } or just the user
-        const userData = response.data.user || response.data
-        login(userData)
+        const userData = response.data.user
+        const token = response.data.accessToken
+        
+        if (token) {
+          localStorage.setItem("accessToken", token)
+        }
+        
+        login(userData || response.data)
       }
       
       // Delay redirect to show success message

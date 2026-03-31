@@ -45,11 +45,12 @@ export default function UploadPage() {
       formData.append("videoFile", videoFile);
       formData.append("thumbnail", thumbnail);
 
-      await publishVideo(formData);
+      const response = await publishVideo(formData);
       router.push("/dashboard");
     } catch (err: any) {
       console.error("Upload failed:", err);
-      setError(err.response?.data?.message || "Failed to upload video. Please try again.");
+      const serverMessage = err.response?.data?.message || err.response?.data?.errors?.[0] || err.message;
+      setError(`Upload failed: ${serverMessage}`);
     } finally {
       setLoading(false);
     }

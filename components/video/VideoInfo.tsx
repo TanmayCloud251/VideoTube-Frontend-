@@ -66,17 +66,23 @@ export default function VideoInfo({ video }: VideoInfoProps) {
       
       <div className="flex flex-col md:flex-row md:items-center justify-between mt-2 gap-4">
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-full overflow-hidden">
-            <img
-              src={video.owner.avatar}
-              alt={video.owner.fullName}
-              className="object-cover w-full h-full"
-            />
+          <div className="relative w-10 h-10 rounded-full overflow-hidden bg-neutral-700">
+            {video.owner?.avatar ? (
+              <img
+                src={video.owner.avatar}
+                alt={video.owner.fullName || "User"}
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs text-neutral-500">
+                ?
+              </div>
+            )}
           </div>
           <div>
             <p className="text-xs text-neutral-400 mb-0.5">Created by</p>
-            <p className="font-semibold text-white leading-none">{video.owner.fullName}</p>
-            <p className="text-xs text-neutral-500 mt-1">@{video.owner.username}</p>
+            <p className="font-semibold text-white leading-none">{video.owner?.fullName || "Unknown User"}</p>
+            <p className="text-xs text-neutral-500 mt-1">@{video.owner?.username || "unknown"}</p>
           </div>
           <button 
             onClick={handleSubscribe}

@@ -34,9 +34,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(res.data)
       } else {
         setUser(null)
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("accessToken")
+        }
       }
     } catch (err) {
       setUser(null)
+      // Only remove if we're sure it's an auth error
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("accessToken")
+      }
     } finally {
       setLoading(false)
     }
@@ -54,6 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await logoutUser()
       setUser(null)
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("accessToken")
+      }
       router.push("/")
     } catch (err) {
       console.error("Logout failed:", err)
