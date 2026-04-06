@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatViews, formatTimeAgo } from "@/lib/utils";
 
 type Props = {
   video: {
@@ -7,6 +8,7 @@ type Props = {
     thumbnail: string;
     views: number;
     channelName?: string;
+    createdAt?: string;
     owner?: {
       fullName: string;
     };
@@ -19,7 +21,7 @@ export default function VideoCard({ video }: Props) {
   return (
     <Link href={`/video/${video._id}`}>
       <div className="cursor-pointer group">
-        <div className="relative aspect-video overflow-hidden rounded-xl">
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-neutral-800">
           <img
             src={video.thumbnail}
             alt={video.title}
@@ -37,7 +39,7 @@ export default function VideoCard({ video }: Props) {
           </p>
 
           <p className="text-xs text-neutral-500 mt-0.5">
-            {video.views} views
+            {formatViews(video.views)} views {video.createdAt && `• ${formatTimeAgo(video.createdAt)}`}
           </p>
         </div>
       </div>

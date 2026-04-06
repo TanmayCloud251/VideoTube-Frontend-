@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import VideoCard from "@/components/video/VideoCard";
+import VideoCardSkeleton from "@/components/video/VideoCardSkeleton";
+import CategoryBar from "@/components/CategoryBar";
 import { getVideos } from "@/services/video.service";
 
 export default function HomePage() {
@@ -25,18 +27,28 @@ export default function HomePage() {
     fetchVideos();
   }, []);
 
-  if (loading) return <div>Loading videos...</div>;
-
-  if (!Array.isArray(videos) || videos.length === 0) {
-    return <div className="text-center mt-10 text-neutral-400">No videos found.</div>;
-  }
-
   return (
-    <div className="max-w-[1400px] mx-auto px-6 py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {videos.map((video: any) => (
-          <VideoCard key={video._id} video={video} />
-        ))}
+    <div className="flex flex-col w-full">
+      <div className="sticky top-0 z-10 bg-neutral-900 border-b border-neutral-800/50">
+        <CategoryBar />
+      </div>
+      
+      <div className="max-w-[1600px] mx-auto w-full px-6 py-8">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <VideoCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : !Array.isArray(videos) || videos.length === 0 ? (
+          <div className="text-center mt-10 text-neutral-400">No videos found.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">
+            {videos.map((video: any) => (
+              <VideoCard key={video._id} video={video} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
