@@ -130,6 +130,8 @@ export default function ProfilePage({ params }: { params: Promise<{ username: st
                   title: video.title,
                   thumbnail: video.thumbnail,
                   views: video.views,
+                  duration: video.duration,
+                  createdAt: video.createdAt,
                   owner: { fullName: profile.fullName }
                 }} />
               ))}

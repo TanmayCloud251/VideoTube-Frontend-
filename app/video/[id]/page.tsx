@@ -88,6 +88,8 @@ export default function VideoPage({ params }: { params: Promise<{ id: string }> 
                       title: v.title,
                       thumbnail: v.thumbnail,
                       views: v.views,
+                      duration: v.duration,
+                      createdAt: v.createdAt,
                       channelName: v.owner?.fullName || "Unknown"
                     }} />
                   </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatViews, formatTimeAgo } from "@/lib/utils";
+import { formatViews, formatTimeAgo, formatDuration } from "@/lib/utils";
 
 type Props = {
   video: {
@@ -7,6 +7,7 @@ type Props = {
     title: string;
     thumbnail: string;
     views: number;
+    duration?: number;
     channelName?: string;
     createdAt?: string;
     owner?: {
@@ -27,6 +28,11 @@ export default function VideoCard({ video }: Props) {
             alt={video.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
+          {video.duration !== undefined && (
+            <div className="absolute bottom-1.5 right-1.5 bg-black/80 px-1.5 py-0.5 rounded text-[10px] font-bold text-white tracking-wider">
+              {formatDuration(video.duration)}
+            </div>
+          )}
         </div>
 
         <div className="mt-3">

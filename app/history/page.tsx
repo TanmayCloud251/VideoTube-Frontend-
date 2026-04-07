@@ -74,6 +74,8 @@ export default function HistoryPage() {
                 title: video.title,
                 thumbnail: video.thumbnail,
                 views: video.views,
+                duration: video.duration,
+                createdAt: video.createdAt,
                 owner: video.owner
             }} />
           ))}
