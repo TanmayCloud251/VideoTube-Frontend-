@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import VideoPlayer from "@/components/video/VideoPlayer";
 import VideoInfo from "@/components/video/VideoInfo";
 import CommentSection from "@/components/video/CommentSection";
-import VideoCard from "@/components/video/VideoCard";
+import SidebarVideoCard from "@/components/video/SidebarVideoCard";
 import { getVideoById, getVideos } from "@/services/video.service";
 import { Video } from "@/types";
 
@@ -66,34 +66,35 @@ export default function VideoPage({ params }: { params: Promise<{ id: string }> 
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 py-8">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="max-w-[1700px] mx-auto px-4 lg:px-8 py-6">
+      <div className="flex flex-col lg:flex-row gap-x-8">
         {/* MAIN CONTENT: Player + Info + Comments */}
         <div className="flex-1 min-w-0">
-          <VideoPlayer videoUrl={video.videoFile} thumbnailUrl={video.thumbnail} />
-          <VideoInfo video={video} />
-          <CommentSection videoId={video._id} />
+          <div className="w-full">
+            <VideoPlayer videoUrl={video.videoFile} thumbnailUrl={video.thumbnail} />
+            <VideoInfo video={video} />
+            <CommentSection videoId={video._id} />
+          </div>
         </div>
 
         {/* SIDEBAR: Related Videos */}
-        <div className="w-full lg:w-[350px] xl:w-[400px] flex-shrink-0">
-          <h2 className="text-lg font-bold text-white mb-4">Related Videos</h2>
-          <div className="flex flex-col gap-4">
+        <div className="w-full lg:w-[380px] xl:w-[420px] flex-shrink-0 mt-8 lg:mt-0">
+          <h2 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider text-neutral-400">Related Videos</h2>
+          <div className="flex flex-col gap-3">
             {relatedVideos.length > 0 ? (
               relatedVideos.map((v) => (
-                <div key={v._id} className="flex gap-3">
-                  <div className="w-40 flex-shrink-0">
-                    <VideoCard video={{
-                      _id: v._id,
-                      title: v.title,
-                      thumbnail: v.thumbnail,
-                      views: v.views,
-                      duration: v.duration,
-                      createdAt: v.createdAt,
-                      channelName: v.owner?.fullName || "Unknown"
-                    }} />
-                  </div>
-                </div>
+                <SidebarVideoCard 
+                  key={v._id} 
+                  video={{
+                    _id: v._id,
+                    title: v.title,
+                    thumbnail: v.thumbnail,
+                    views: v.views,
+                    duration: v.duration,
+                    createdAt: v.createdAt,
+                    channelName: v.owner?.fullName || "Unknown"
+                  }} 
+                />
               ))
             ) : (
               <p className="text-neutral-500 text-sm">No related videos found.</p>

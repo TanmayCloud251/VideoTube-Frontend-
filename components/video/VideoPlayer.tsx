@@ -33,8 +33,8 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl }: VideoPlayerProps
   }
 
   return (
-    <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-neutral-800">
-      <MediaPlayer src={videoUrl} poster={thumbnailUrl} controls>
+    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-lg border border-neutral-800/50">
+      <MediaPlayer src={videoUrl} poster={thumbnailUrl} controls className="w-full h-full">
         <MediaProvider />
       </MediaPlayer>
     </div>
