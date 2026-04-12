@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getTweets, createTweet, updateTweet, toggleTweetLike, deleteTweet } from "@/services/tweet.service";
 import { ThumbsUp, Trash2, Send, MessageCircle, Edit2, X, Check } from "lucide-react";
+import Link from "next/link";
 
 interface Tweet {
   _id: string;
@@ -158,7 +159,10 @@ export default function TweetsPage() {
             </div>
           ) : (
             <div className="bg-neutral-800/20 p-6 rounded-xl border border-neutral-800 text-center">
-              <p className="text-neutral-400 text-sm">Login to share your thoughts.</p>
+              <p className="text-neutral-400 text-sm mb-4">Login to share your thoughts.</p>
+              <Link href="/login" className="inline-block bg-brand-accent text-brand-dark px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+                Login
+              </Link>
             </div>
           )}
         </div>

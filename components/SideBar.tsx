@@ -2,18 +2,17 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useAuth } from "@/context/AuthContext"
 import {
   Home,
   ThumbsUp,
   UserCheck2,
   MessageCircle,
   ListMusic,
-  Smartphone,
 } from "lucide-react"
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Shorts", href: "/shorts", icon: Smartphone },
   { name: "Liked Videos", href: "/liked", icon: ThumbsUp },
   { name: "Tweets", href: "/tweets", icon: MessageCircle },
   { name: "Subscriptions", href: "/subscriptions", icon: UserCheck2 },
@@ -27,6 +26,7 @@ type Props = {
 
 function SideBar({isOpen}: Props) {
   const pathname = usePathname()
+  const { user } = useAuth()
 
   if (!isOpen) return null
 
@@ -56,6 +56,20 @@ function SideBar({isOpen}: Props) {
         })}
 
       </ul>
+
+      {!user && (
+        <div className="mt-6 border-t border-neutral-800 pt-6 px-3">
+          <p className="text-xs text-neutral-400 mb-3">
+            Sign in to like videos, comment, and subscribe.
+          </p>
+          <Link
+            href="/login"
+            className="flex items-center justify-center w-full rounded-full border border-neutral-700 px-4 py-1.5 text-sm font-medium text-brand-accent hover:bg-brand-accent/10 transition-colors"
+          >
+            Sign in
+          </Link>
+        </div>
+      )}
     </aside>
   )
 }

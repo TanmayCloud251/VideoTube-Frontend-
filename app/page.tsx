@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import VideoCard from "@/components/video/VideoCard";
 import VideoCardSkeleton from "@/components/video/VideoCardSkeleton";
-import CategoryBar from "@/components/CategoryBar";
 import { getVideos } from "@/services/video.service";
 
 export default function HomePage() {
@@ -29,10 +28,6 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="sticky top-0 z-10 bg-neutral-900 border-b border-neutral-800/50">
-        <CategoryBar />
-      </div>
-      
       <div className="max-w-[1600px] mx-auto w-full px-6 py-8">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">

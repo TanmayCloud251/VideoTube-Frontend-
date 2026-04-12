@@ -1,38 +1,56 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import VideoCard from "@/components/video/VideoCard";
 import { getLikedVideos } from "@/services/like.service";
 import { Video } from "@/types";
 import { ThumbsUp } from "lucide-react";
+import Link from "next/link";
 
 export default function LikedVideosPage() {
+  const { user } = useAuth();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLikedVideos = async () => {
-      try {
-        const res = await getLikedVideos();
-        // The liked videos usually come as an array of objects where the video itself is a nested property
-        const data = Array.isArray(res) ? res : res?.data || [];
-        // Extract video objects if they are nested (common in toggle-like implementations)
-        const extractedVideos = data.map((item: any) => item.likedVideo || item.video || item);
-        setVideos(extractedVideos.filter((v: any) => v && v._id));
-      } catch (error) {
-        console.error("Failed to fetch liked videos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (user) {
+      fetchLikedVideos();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
-    fetchLikedVideos();
-  }, []);
+  const fetchLikedVideos = async () => {
+    try {
+      const res = await getLikedVideos();
+      // The liked videos usually come as an array of objects where the video itself is a nested property
+      const data = Array.isArray(res) ? res : res?.data || [];
+      // Extract video objects if they are nested (common in toggle-like implementations)
+      const extractedVideos = data.map((item: any) => item.likedVideo || item.video || item);
+      setVideos(extractedVideos.filter((v: any) => v && v._id));
+    } catch (error) {
+      console.error("Failed to fetch liked videos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-accent"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-4">
+        <h2 className="text-2xl font-bold text-white mb-4">Login to view liked videos</h2>
+        <Link href="/login" className="bg-brand-accent text-brand-dark px-8 py-3 rounded-full font-bold">
+          Login
+        </Link>
       </div>
     );
   }
