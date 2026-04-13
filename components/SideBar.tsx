@@ -9,10 +9,12 @@ import {
   UserCheck2,
   MessageCircle,
   ListMusic,
+  History,
 } from "lucide-react"
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
+  { name: "History", href: "/history", icon: History },
   { name: "Liked Videos", href: "/liked", icon: ThumbsUp },
   { name: "Tweets", href: "/tweets", icon: MessageCircle },
   { name: "Subscriptions", href: "/subscriptions", icon: UserCheck2 },

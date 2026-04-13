@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "./ui/Button"
-import { Menu, Search, Video, User, LogOut, LayoutDashboard, UserCircle, Plus } from "lucide-react"
+import { Menu, Search, Video, User, LogOut, LayoutDashboard, UserCircle, Plus, History } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
 type Props = {
@@ -129,6 +129,15 @@ export default function Navbar({ toggleSidebar }: Props) {
                   >
                     <LayoutDashboard size={18} />
                     Dashboard
+                  </Link>
+
+                  <Link
+                    href="/history"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <History size={18} />
+                    History
                   </Link>
 
                   <button

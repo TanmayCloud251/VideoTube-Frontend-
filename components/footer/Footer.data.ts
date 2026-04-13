@@ -8,27 +8,29 @@ export type FooterSection = {
 
 export const footerSections: FooterSection[] = [
   {
-    title: "Product",
+    title: "Platform",
     links: [
-      { label: "Videos", href: "/videos" },
-      { label: "Playlists", href: "/playlists" },
+      { label: "Home", href: "/" },
+      { label: "Explore", href: "/search" },
+      { label: "Trending", href: "/" },
       { label: "Tweets", href: "/tweets" },
     ],
   },
   {
-    title: "Resources",
+    title: "Me",
     links: [
-      { label: "Blog", href: "/blog" },
-      { label: "Docs", href: "/docs" },
-      { label: "API", href: "/api-docs" },
+      { label: "About Me", href: "/about" },
+      { label: "Portfolio", href: "/about#projects" },
+      { label: "Contact", href: "/contact" },
+      { label: "Resume", href: "/about" },
     ],
   },
   {
-    title: "Company",
+    title: "Legal",
     links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
       { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Cookie Policy", href: "/privacy" },
     ],
   },
 ]

@@ -8,7 +8,7 @@ import { Users, Bell } from "lucide-react";
 
 interface Subscription {
   _id: string;
-  subscribedChannel: {
+  channel: {
     _id: string;
     username: string;
     fullName: string;
@@ -33,7 +33,9 @@ export default function SubscriptionsPage() {
     try {
       const res = await getSubscribedChannels(user!._id);
       const data = Array.isArray(res) ? res : res?.data || [];
-      setSubscriptions(data);
+      // Filter out any entries where the channel might be missing or deleted
+      const validSubscriptions = data.filter((sub: any) => sub?.channel);
+      setSubscriptions(validSubscriptions);
     } catch (error) {
       console.error("Failed to fetch subscriptions:", error);
     } finally {
@@ -77,18 +79,18 @@ export default function SubscriptionsPage() {
           {subscriptions.map((sub) => (
             <Link 
               key={sub._id} 
-              href={`/profile/${sub.subscribedChannel.username}`}
+              href={`/profile/${sub.channel.username}`}
               className="bg-neutral-800/20 p-4 rounded-2xl border border-neutral-800 hover:bg-neutral-800/40 transition-all group flex flex-col items-center text-center"
             >
               <div className="relative w-16 h-16 rounded-full overflow-hidden mb-3 ring-1 ring-neutral-800 group-hover:ring-brand-accent transition-all">
                 <img 
-                  src={sub.subscribedChannel.avatar} 
-                  alt={sub.subscribedChannel.fullName} 
+                  src={sub.channel.avatar} 
+                  alt={sub.channel.fullName} 
                   className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="font-bold text-white text-sm line-clamp-1">{sub.subscribedChannel.fullName}</h3>
-              <p className="text-neutral-500 text-[10px] mb-3">@{sub.subscribedChannel.username}</p>
+              <h3 className="font-bold text-white text-sm line-clamp-1">{sub.channel.fullName}</h3>
+              <p className="text-neutral-500 text-[10px] mb-3">@{sub.channel.username}</p>
               <div className="flex items-center gap-1.5 bg-neutral-800/50 px-3 py-1 rounded-full text-[10px] text-neutral-400">
                 <Bell size={12} />
                 Subscribed

@@ -16,6 +16,7 @@ export default function VideoPage({ params }: { params: Promise<{ id: string }> 
   const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [orientation, setOrientation] = useState<"landscape" | "portrait">("landscape");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,18 +68,22 @@ export default function VideoPage({ params }: { params: Promise<{ id: string }> 
 
   return (
     <div className="max-w-[1700px] mx-auto px-4 lg:px-8 py-6">
-      <div className="flex flex-col lg:flex-row gap-x-8">
+      <div className={`flex flex-col lg:flex-row gap-x-8 ${orientation === "portrait" ? "justify-center" : ""}`}>
         {/* MAIN CONTENT: Player + Info + Comments */}
-        <div className="flex-1 min-w-0">
+        <div className={`flex-1 min-w-0 ${orientation === "portrait" ? "flex flex-col items-center max-w-[400px] lg:max-w-[500px] mx-auto" : ""}`}>
           <div className="w-full">
-            <VideoPlayer videoUrl={video.videoFile} thumbnailUrl={video.thumbnail} />
+            <VideoPlayer 
+              videoUrl={video.videoFile} 
+              thumbnailUrl={video.thumbnail} 
+              onOrientationChange={setOrientation}
+            />
             <VideoInfo video={video} />
             <CommentSection videoId={video._id} />
           </div>
         </div>
 
         {/* SIDEBAR: Related Videos */}
-        <div className="w-full lg:w-[380px] xl:w-[420px] flex-shrink-0 mt-8 lg:mt-0">
+        <div className={`w-full lg:w-[380px] xl:w-[420px] flex-shrink-0 mt-8 lg:mt-0 ${orientation === "portrait" ? "hidden lg:block lg:max-w-[350px]" : ""}`}>
           <h2 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider text-neutral-400">Related Videos</h2>
           <div className="flex flex-col gap-3">
             {relatedVideos.length > 0 ? (
