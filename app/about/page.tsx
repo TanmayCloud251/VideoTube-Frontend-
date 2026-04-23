@@ -7,14 +7,14 @@ export default function AboutPage() {
     {
       title: "VideoTube",
       description: "A full-featured video sharing platform built with Next.js, Node.js, and MongoDB.",
-      link: "#",
+      link: "https://github.com/TanmayCloud251/VideoTube",
       tags: ["Next.js", "Node.js", "MongoDB", "Tailwind"]
     },
     {
-      title: "AI Image Generator",
-      description: "Cloud-native application using Stable Diffusion for generating high-quality images.",
-      link: "https://github.com/TanmayCloud251/AI-Image-Gen",
-      tags: ["AI", "Python", "React", "AWS"]
+      title: "MegaBlog",
+      description: "A scalable blogging platform with a modern UI and powerful content management features.",
+      link: "https://github.com/TanmayCloud251/MegaBlog",
+      tags: ["Next.js", "TypeScript", "Tailwind", "Firebase"]
     },
     {
       title: "DevOps Pipeline",

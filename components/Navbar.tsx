@@ -47,8 +47,8 @@ export default function Navbar({ toggleSidebar }: Props) {
         >
           <Menu size={20} />
         </button>
-        <Link href="/" className="text-lg font-bold">
-          VideoTube
+        <Link href="/" className="text-2xl font-black  tracking-tighter text-border-2 ">
+          VIDEOTUBE<span className="text-white">.</span>
         </Link>
       </div>
 
