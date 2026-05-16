@@ -19,9 +19,13 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl, onOrientationChang
     setIsMounted(true);
   }, []);
 
-  const handleLoadedMetadata = (event: MediaLoadedMetadataEvent) => {
-    const { videoWidth, videoHeight } = event.detail;
-    if (videoWidth && videoHeight) {
+  const handleLoadedMetadata = (event: any) => {
+    // In newer Vidstack versions, the event detail might be void or structured differently
+    // We can use the media player instance from the event target if needed, 
+    // or type the event as any to access the underlying native event/properties
+    const target = event.target as HTMLVideoElement;
+    if (target && target.videoWidth) {
+      const { videoWidth, videoHeight } = target;
       const newOrientation = videoWidth < videoHeight ? "portrait" : "landscape";
       setOrientation(newOrientation);
       if (onOrientationChange) {
