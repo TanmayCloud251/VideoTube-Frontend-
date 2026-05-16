@@ -67,27 +67,34 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   const handleWatchLater = async () => {
     if (!user) return alert("Please login to save videos");
     let watchLaterPlaylist = playlists.find(p => p.name === "Watch Later");
+    
     if (!watchLaterPlaylist) {
       try {
         const res = await createPlaylist("Watch Later", "My watch later videos");
-        watchLaterPlaylist = res.data;
-        setPlaylists(prev => [...prev, watchLaterPlaylist]);
+        const newPlaylist = res.data;
+        if (newPlaylist) {
+          setPlaylists(prev => [...prev, newPlaylist]);
+          handleAddToPlaylist(newPlaylist._id);
+        }
       } catch (error) {
         console.error("Failed to create Watch Later playlist:", error);
-        return;
       }
+    } else {
+      handleAddToPlaylist(watchLaterPlaylist._id);
     }
-    handleAddToPlaylist(watchLaterPlaylist._id);
   };
 
   const handleCreatePlaylist = async () => {
     if (!newPlaylistName.trim()) return;
     try {
       const res = await createPlaylist(newPlaylistName, "My custom playlist");
-      setPlaylists([...playlists, res.data]);
-      await handleAddToPlaylist(res.data._id);
-      setNewPlaylistName("");
-      setIsCreating(false);
+      const newPlaylist = res.data;
+      if (newPlaylist) {
+        setPlaylists(prev => [...prev, newPlaylist]);
+        await handleAddToPlaylist(newPlaylist._id);
+        setNewPlaylistName("");
+        setIsCreating(false);
+      }
     } catch (error) {
       console.error("Failed to create playlist:", error);
     }
