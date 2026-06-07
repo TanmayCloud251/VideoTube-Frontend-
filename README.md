@@ -3,7 +3,7 @@
 The modern, responsive user interface for the VideoTube platform, built with Next.js and Tailwind CSS.
 
 ## 🚀 Live Demo
-- **Live Frontend:** [https://video-tube-frontend-git-main-tanmay-mishras-projects-7e4f8817.vercel.app](https://video-tube-frontend-git-main-tanmay-mishras-projects-7e4f8817.vercel.app)
+- **Live Frontend:** [https://video-tube-frontend-sepia.vercel.app](https://video-tube-frontend-sepia.vercel.app)
 - **Live Backend API:** [https://videotube-xby8.onrender.com](https://videotube-xby8.onrender.com)
 
 ---
