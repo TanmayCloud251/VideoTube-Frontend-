@@ -20,11 +20,28 @@ export default function RootLayout({
   const isVideoPage = pathname.startsWith("/video/")
 
   useEffect(() => {
-    if (isVideoPage) {
-      setIsSidebarOpen(false)
-    } else if (!isAuthPage) {
-      setIsSidebarOpen(true)
+    // Determine initial sidebar state based on screen width
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768; // 768px is the standard 'md' breakpoint
+      
+      if (isVideoPage || isAuthPage) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(!isMobile);
+      }
+    };
+
+    // Run once on mount and whenever pathname/pages change
+    handleResize();
+
+    // Close sidebar on mobile when navigating
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
     }
+
+    // Optional: Update state when window is resized
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [pathname, isVideoPage, isAuthPage])
 
   const toggleSidebar = useCallback(() => {
@@ -39,7 +56,7 @@ export default function RootLayout({
             <Navbar toggleSidebar={toggleSidebar} />
 
             <div className="flex flex-1 overflow-hidden">
-              {!isAuthPage && <SideBar isOpen={isSidebarOpen} />}
+              {!isAuthPage && <SideBar isOpen={isSidebarOpen} onClose={toggleSidebar} />}
 
               <div className="flex flex-1 flex-col overflow-hidden">
                 <main className="flex-1 overflow-y-auto bg-neutral-900 text-white">

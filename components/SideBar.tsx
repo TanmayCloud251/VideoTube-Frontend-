@@ -23,18 +23,29 @@ const navItems = [
 
 
 type Props = {
-  isOpen: boolean
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-function SideBar({isOpen}: Props) {
+function SideBar({isOpen, onClose}: Props) {
   const pathname = usePathname()
   const { user } = useAuth()
 
   if (!isOpen) return null
 
   return (
-    <aside className="sticky left-0 top-0 h-[calc(100vh-64px)] w-60 border-r bg-neutral-950 text-gray-300 p-4 overflow-y-auto">
-      <ul className="flex flex-col gap-2">
+    <>
+      {/* Overlay for mobile when sidebar is open */}
+      <div 
+        className="fixed inset-0 z-40 bg-black/50 md:hidden" 
+        onClick={onClose} 
+      />
+      
+      <aside className={`
+        fixed left-0 top-16 z-50 h-[calc(100vh-64px)] w-60 border-r bg-neutral-950 text-gray-300 p-4 overflow-y-auto transition-transform
+        md:sticky md:top-16 md:z-auto
+      `}>
+        <ul className="flex flex-col gap-2">
 
         {navItems.map((item) => {
           const isActive = pathname === item.href
