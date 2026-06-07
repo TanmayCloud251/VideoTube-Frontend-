@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import Link from "next/link"
@@ -12,10 +12,20 @@ export default function LoginForm() {
   const { login } = useAuth()
   const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
+  const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const router = useRouter()
+
+  useEffect(() => {
+    // Check if there's a remembered identifier
+    const savedIdentifier = localStorage.getItem("rememberedIdentifier")
+    if (savedIdentifier) {
+      setIdentifier(savedIdentifier)
+      setRememberMe(true)
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,6 +47,13 @@ export default function LoginForm() {
         
         if (token) {
           localStorage.setItem("accessToken", token)
+        }
+
+        // Handle Remember Me logic
+        if (rememberMe) {
+          localStorage.setItem("rememberedIdentifier", identifier)
+        } else {
+          localStorage.removeItem("rememberedIdentifier")
         }
         
         login(userData || response.data)
@@ -102,6 +119,8 @@ export default function LoginForm() {
               id="remember-me"
               name="remember-me"
               type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
               className="h-4 w-4 rounded border-white/10 bg-neutral-800 text-brand-accent focus:ring-brand-accent"
             />
             <label

@@ -1,7 +1,21 @@
 import axios from "axios";
 
+const getBaseURL = () => {
+  let url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+  
+  // Remove trailing slash if present
+  url = url.replace(/\/+$/, "");
+  
+  // Append /api/v1 if not already present
+  if (!url.toLowerCase().includes("/api/v1")) {
+    url = `${url}/api/v1`;
+  }
+  
+  return url;
+};
+
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: getBaseURL(),
   withCredentials: true,
 });
 
