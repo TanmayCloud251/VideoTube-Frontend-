@@ -84,6 +84,7 @@ function SideBar({isOpen, onClose}: Props) {
         </div>
       )}
     </aside>
+    </>
   )
 }
 
