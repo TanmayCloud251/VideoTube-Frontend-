@@ -11,7 +11,11 @@ const getBaseURL = () => {
     url = `${url}/api/v1`;
   }
   
-  return url;
+  const finalUrl = url;
+  if (typeof window !== "undefined") {
+    console.log("API Configured with Base URL:", finalUrl);
+  }
+  return finalUrl;
 };
 
 export const api = axios.create({
