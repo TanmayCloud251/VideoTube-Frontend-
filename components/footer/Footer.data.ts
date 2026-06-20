@@ -22,7 +22,7 @@ export const footerSections: FooterSection[] = [
       { label: "About Me", href: "/about" },
       { label: "Portfolio", href: "/about#projects" },
       { label: "Contact", href: "/contact" },
-      { label: "Resume", href: "/about" },
+      { label: "Resume", href: "/Tanmay_Mishra_Resume.pdf" },
     ],
   },
   {

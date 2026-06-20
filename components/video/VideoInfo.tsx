@@ -23,6 +23,18 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   const [showMore, setShowMore] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
+
+  const showToast = (message: string, type: "success" | "error" | "info" = "success") => {
+    setToast({ message, type });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   useEffect(() => {
     if (user?._id) {
@@ -34,7 +46,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   }, [user]);
 
   const handleLike = async () => {
-    if (!user) return alert("Please login to like videos");
+    if (!user) return showToast("Please login to like videos", "error");
     try {
       await toggleVideoLike(video._id);
       setIsLiked(!isLiked);
@@ -45,7 +57,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   };
 
   const handleSubscribe = async () => {
-    if (!user) return alert("Please login to subscribe");
+    if (!user) return showToast("Please login to subscribe", "error");
     try {
       await toggleSubscription(video.owner._id);
       setIsSubscribed(!isSubscribed);
@@ -57,7 +69,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   const handleAddToPlaylist = async (playlistId: string) => {
     try {
       await addVideoToPlaylist(playlistId, video._id);
-      alert("Added to playlist!");
+      showToast("Added to playlist!", "success");
       setShowPlaylists(false);
     } catch (error) {
       console.error("Failed to add to playlist:", error);
@@ -65,7 +77,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   };
 
   const handleWatchLater = async () => {
-    if (!user) return alert("Please login to save videos");
+    if (!user) return showToast("Please login to save videos", "error");
     let watchLaterPlaylist = playlists.find(p => p.name === "Watch Later");
     
     if (!watchLaterPlaylist) {
@@ -104,7 +116,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl);
-    alert("Link copied to clipboard!");
+    showToast("Link copied to clipboard!", "success");
     setShowShare(false);
   };
 
@@ -119,9 +131,32 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   };
 
   const shareToInstagram = () => {
-    alert("Instagram doesn't support direct web sharing. Link copied instead!");
     navigator.clipboard.writeText(shareUrl);
+    showToast("Instagram link copied! Share it on your profile.", "info");
     setShowShare(false);
+  };
+
+  const handleShareClick = async () => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: video.title,
+          text: `Check out "${video.title}" on VideoTube!`,
+          url: shareUrl,
+        });
+        showToast("Shared successfully!", "success");
+        return;
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') {
+          console.error("Web Share API failed, using fallback:", error);
+        } else {
+          return; // User cancelled
+        }
+      }
+    }
+    setShowShare(!showShare);
+    setShowPlaylists(false);
+    setShowMore(false);
   };
 
   const handleDownload = () => {
@@ -131,7 +166,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
   };
 
   const handleReport = () => {
-    alert("Thank you for reporting. Our team will review this video.");
+    showToast("Thank you for reporting. Our team will review this video.", "success");
     setShowMore(false);
   };
 
@@ -260,11 +295,7 @@ export default function VideoInfo({ video }: VideoInfoProps) {
 
           <div className="relative">
             <button 
-              onClick={() => {
-                setShowShare(!showShare);
-                setShowPlaylists(false);
-                setShowMore(false);
-              }}
+              onClick={handleShareClick}
               className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded-full text-white transition-colors"
             >
               <Share2 size={20} />
@@ -345,6 +376,17 @@ export default function VideoInfo({ video }: VideoInfoProps) {
         </div>
         <p className="text-neutral-200 whitespace-pre-wrap">{video.description}</p>
       </div>
+
+      {/* React Toast Alert Component */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-neutral-900 border border-neutral-800 text-white rounded-2xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <span className={`w-2 h-2 rounded-full ${
+            toast.type === "success" ? "bg-brand-accent animate-pulse" : 
+            toast.type === "error" ? "bg-red-500" : "bg-sky-400"
+          }`} />
+          <span className="text-sm font-semibold">{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

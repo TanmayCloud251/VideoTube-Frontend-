@@ -26,11 +26,28 @@ export default function Footer() {
             </p>
 
             <div className="mt-8 flex items-center gap-4">
-               <a href="https://github.com/TanmayCloud251" target="_blank" className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-brand-accent hover:border-brand-accent/50 transition-all">
+               <a 
+                 href="https://github.com/TanmayCloud251" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-brand-accent hover:border-brand-accent/50 hover:-translate-y-0.5 transition-all duration-300"
+               >
                   <Github size={18} />
                </a>
-               <a href="https://www.linkedin.com/in/tanmaymi251/" target="_blank" className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-brand-accent hover:border-brand-accent/50 transition-all">
+               <a 
+                 href="https://www.linkedin.com/in/tanmaymi251/" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-brand-accent hover:border-brand-accent/50 hover:-translate-y-0.5 transition-all duration-300"
+               >
                   <Linkedin size={18} />
+               </a>
+               <a 
+                 href="/Tanmay_Mishra_Resume.pdf" 
+                 download
+                 className="flex items-center gap-2 px-4 py-2 h-10 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-black uppercase tracking-widest text-neutral-400 hover:text-brand-dark hover:bg-brand-accent hover:border-brand-accent hover:-translate-y-0.5 transition-all duration-300"
+               >
+                  Resume
                </a>
             </div>
           </div>
