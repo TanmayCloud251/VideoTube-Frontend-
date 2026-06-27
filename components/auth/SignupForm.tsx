@@ -146,6 +146,7 @@ export default function SignupForm() {
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-brand-light">
+            <span className="text-red-500 mr-1 font-bold">*</span>
             Avatar Image
           </label>
           <div className="flex w-full items-center justify-center">

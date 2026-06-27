@@ -57,7 +57,7 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8">
+    <div className="max-w-[1400px] mx-auto px-6 py-8">
       <div className="flex items-center gap-3 mb-8">
         <div className="bg-brand-accent/10 p-3 rounded-xl">
           <Upload size={24} className="text-brand-accent" />
@@ -74,12 +74,15 @@ export default function UploadPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-neutral-800/20 p-6 md:p-8 rounded-2xl border border-neutral-800">
+      <form onSubmit={handleSubmit} className="max-w-3xl space-y-6 bg-neutral-800/20 p-6 md:p-8 rounded-2xl border border-neutral-800">
         
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">Title</label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2">
+            <span className="text-red-500 mr-1 font-bold">*</span>Title
+          </label>
           <input
             type="text"
+            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full bg-neutral-900/50 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors"
@@ -88,11 +91,14 @@ export default function UploadPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">Description</label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2">
+            <span className="text-red-500 mr-1 font-bold">*</span>Description
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
+            required
             className="w-full bg-neutral-900/50 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors resize-none"
             placeholder="Tell viewers about your video"
           />
@@ -101,7 +107,9 @@ export default function UploadPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Video File Input */}
           <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">Video File</label>
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
+              <span className="text-red-500 mr-1 font-bold">*</span>Video File
+            </label>
             <div className="relative">
               <input
                 type="file"
@@ -131,7 +139,9 @@ export default function UploadPage() {
 
           {/* Thumbnail Input */}
           <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">Thumbnail</label>
+            <label className="block text-sm font-medium text-neutral-300 mb-2">
+              <span className="text-red-500 mr-1 font-bold">*</span>Thumbnail
+            </label>
             <div className="relative">
               <input
                 type="file"
