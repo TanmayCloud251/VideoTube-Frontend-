@@ -74,7 +74,7 @@ export default function UploadPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="max-w-3xl space-y-6 bg-neutral-800/20 p-6 md:p-8 rounded-2xl border border-neutral-800">
+      <form onSubmit={handleSubmit} className="w-full space-y-6 bg-neutral-800/20 p-6 md:p-8 rounded-2xl border border-neutral-800">
         
         <div>
           <label className="block text-sm font-medium text-neutral-300 mb-2">
